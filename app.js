@@ -37,29 +37,66 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 정적 파일 경로 설정 (이미지 파일 접근을 위한 설정)
 app.use(express.static(path.join(__dirname, 'images')));
 
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+});
+
 // 회원가입 라우터
 app.post('/signup', (req, res) => {
     const { username, email, password } = req.body;
 
-    // 비밀번호 해시화
-    bcrypt.hash(password, 12, (err, hashedPassword) => {
+    // 이메일 중복 검사
+    const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
+    db.query(checkEmailQuery, [email], (err, result) => {
         if (err) {
-            console.error('비밀번호 암호화 오류:', err);
-            return res.status(500).send('비밀번호 암호화 오류');
+            console.error('회원가입 오류:', err);
+            return res.status(500).send('회원가입 오류');
         }
 
-        // SQL 쿼리 실행 (이메일 중복 체크 후 사용자 저장)
-        const query = 'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)';
-        db.query(query, [username, email, hashedPassword], (err, result) => {
+        // 이미 존재하는 이메일이 있는 경우
+        if (result.length > 0) {
+            return res.send(`
+                <script>
+                    alert("이미 사용 중인 이메일입니다. 다른 이메일을 사용해 주세요.");
+                    window.location.href = "/signup";
+                </script>
+            `);
+        }
+
+        // 비밀번호 해시화
+        bcrypt.hash(password, 12, (err, hashedPassword) => {
             if (err) {
-                console.error('회원가입 오류:', err);
-                return res.status(500).send('회원가입 오류');
+                console.error('비밀번호 암호화 오류:', err);
+                return res.status(500).send('비밀번호 암호화 오류');
             }
 
-            console.log('회원가입 성공:', result);
-            res.redirect('/login'); // 회원가입 후 로그인 페이지로 리디렉션
+            // SQL 쿼리 실행 (사용자 정보 저장)
+            const query = 'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)';
+            db.query(query, [username, email, hashedPassword], (err, result) => {
+                if (err) {
+                    console.error('회원가입 오류:', err);
+                    return res.status(500).send('회원가입 오류');
+                }
+
+                console.log('회원가입 성공:', result);
+                res.redirect('/signup-success'); // 회원가입 성공 후 페이지로 리디렉션
+            });
         });
     });
+});
+
+// 회원가입 성공 페이지 라우터
+app.get('/signup-success', (req, res) => {
+    res.send(`
+        <script>
+            alert("회원가입이 완료되었습니다!");
+            window.location.href = "/login";  // 로그인 페이지로 리디렉션
+        </script>
+    `);
 });
 
 // 로그인 라우터
