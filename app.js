@@ -127,7 +127,7 @@ app.post('/login', (req, res) => {
                 // 로그인 성공 시 세션에 사용자 정보 저장
                 req.session.user = result[0]; // 사용자 정보를 세션에 저장
                 console.log('로그인 성공:', result[0].username);
-                return res.redirect('/main'); // 메인 페이지로 리디렉션
+                return res.redirect('/main.html'); // 메인 페이지로 리디렉션
             } else {
                 console.log('비밀번호 불일치');
                 return res.status(400).send('비밀번호가 일치하지 않습니다.');
@@ -136,17 +136,12 @@ app.post('/login', (req, res) => {
     });
 });
 
-// 메인 페이지 라우터
-app.get('/main', (req, res) => {
-    // 세션에 사용자 정보가 있으면 로그인된 상태로 페이지 표시
+// 사용자 정보를 제공하는 API
+app.get('/api/user', (req, res) => {
     if (req.session.user) {
-        res.send(`
-            <h1>메인 페이지</h1>
-            <p>안녕하세요, ${req.session.user.username}님!</p>
-            <a href="/logout">로그아웃</a>
-        `);
+        res.json({ username: req.session.user.username });
     } else {
-        res.redirect('/login'); // 로그인되어 있지 않으면 로그인 페이지로 리디렉션
+        res.status(401).json({ message: '로그인하지 않았습니다.' });
     }
 });
 
