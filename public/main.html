@@ -199,7 +199,29 @@
                 <a href="profile.html" title="프로필"><img src="회원가입.png" alt="프로필 아이콘"></a>
                 <a href="login.html" title="로그인"><img src="로그인.png" alt="로그인 아이콘"></a>
                 <a href="community.html" title="커뮤니티"><img src="커뮤니티.png" alt="커뮤니티 아이콘"></a>
-            </nav>
+
+		<span id="user-info" style="color: white; margin-left: 20px;">
+
+		 <script>
+			fetch('/api/user') // 사용자 정보를 제공하는 API 경로
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                                throw new Error('사용자 정보를 가져오는 데 실패했습니다.');
+                            })
+				.then(user => {
+                                document.getElementById('user-info').innerHTML = `
+                                    안녕하세요, ${user.username}님! 
+                                    <a href="/logout" style="color: white; margin-left: 20px;">로그아웃</a>
+                                `;
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });	 		
+			</script>
+		  </span>
+      		 </nav>
         </div>
     </header>
 

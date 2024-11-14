@@ -37,29 +37,66 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 정적 파일 경로 설정 (이미지 파일 접근을 위한 설정)
 app.use(express.static(path.join(__dirname, 'images')));
 
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/signup', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+});
+
 // 회원가입 라우터
 app.post('/signup', (req, res) => {
     const { username, email, password } = req.body;
 
-    // 비밀번호 해시화
-    bcrypt.hash(password, 12, (err, hashedPassword) => {
+    // 이메일 중복 검사
+    const checkEmailQuery = 'SELECT * FROM users WHERE email = ?';
+    db.query(checkEmailQuery, [email], (err, result) => {
         if (err) {
-            console.error('비밀번호 암호화 오류:', err);
-            return res.status(500).send('비밀번호 암호화 오류');
+            console.error('회원가입 오류:', err);
+            return res.status(500).send('회원가입 오류');
         }
 
-        // SQL 쿼리 실행 (이메일 중복 체크 후 사용자 저장)
-        const query = 'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)';
-        db.query(query, [username, email, hashedPassword], (err, result) => {
+        // 이미 존재하는 이메일이 있는 경우
+        if (result.length > 0) {
+            return res.send(`
+                <script>
+                    alert("이미 사용 중인 이메일입니다. 다른 이메일을 사용해 주세요.");
+                    window.location.href = "/signup";
+                </script>
+            `);
+        }
+
+        // 비밀번호 해시화
+        bcrypt.hash(password, 12, (err, hashedPassword) => {
             if (err) {
-                console.error('회원가입 오류:', err);
-                return res.status(500).send('회원가입 오류');
+                console.error('비밀번호 암호화 오류:', err);
+                return res.status(500).send('비밀번호 암호화 오류');
             }
 
-            console.log('회원가입 성공:', result);
-            res.redirect('/login'); // 회원가입 후 로그인 페이지로 리디렉션
+            // SQL 쿼리 실행 (사용자 정보 저장)
+            const query = 'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)';
+            db.query(query, [username, email, hashedPassword], (err, result) => {
+                if (err) {
+                    console.error('회원가입 오류:', err);
+                    return res.status(500).send('회원가입 오류');
+                }
+
+                console.log('회원가입 성공:', result);
+                res.redirect('/signup-success'); // 회원가입 성공 후 페이지로 리디렉션
+            });
         });
     });
+});
+
+// 회원가입 성공 페이지 라우터
+app.get('/signup-success', (req, res) => {
+    res.send(`
+        <script>
+            alert("회원가입이 완료되었습니다!");
+            window.location.href = "/login";  // 로그인 페이지로 리디렉션
+        </script>
+    `);
 });
 
 // 로그인 라우터
@@ -90,7 +127,7 @@ app.post('/login', (req, res) => {
                 // 로그인 성공 시 세션에 사용자 정보 저장
                 req.session.user = result[0]; // 사용자 정보를 세션에 저장
                 console.log('로그인 성공:', result[0].username);
-                return res.redirect('/main'); // 메인 페이지로 리디렉션
+                return res.redirect('/main.html'); // 메인 페이지로 리디렉션
             } else {
                 console.log('비밀번호 불일치');
                 return res.status(400).send('비밀번호가 일치하지 않습니다.');
@@ -99,17 +136,12 @@ app.post('/login', (req, res) => {
     });
 });
 
-// 메인 페이지 라우터
-app.get('/main', (req, res) => {
-    // 세션에 사용자 정보가 있으면 로그인된 상태로 페이지 표시
+// 사용자 정보를 제공하는 API
+app.get('/api/user', (req, res) => {
     if (req.session.user) {
-        res.send(`
-            <h1>메인 페이지</h1>
-            <p>안녕하세요, ${req.session.user.username}님!</p>
-            <a href="/logout">로그아웃</a>
-        `);
+        res.json({ username: req.session.user.username });
     } else {
-        res.redirect('/login'); // 로그인되어 있지 않으면 로그인 페이지로 리디렉션
+        res.status(401).json({ message: '로그인하지 않았습니다.' });
     }
 });
 
