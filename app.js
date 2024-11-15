@@ -9,7 +9,7 @@ const app = express();
 const db = mysql.createConnection({
     host: 'localhost',  // 데이터베이스 호스트
     user: 'root',       // 데이터베이스 사용자
-    password: '', // 데이터베이스 비밀번호
+    password: '1234', // 데이터베이스 비밀번호
     database: 'forcook'  // 사용할 데이터베이스
 });
 
@@ -34,8 +34,11 @@ app.use(session({
 // 정적 파일 경로 설정 (로그인, 회원가입 등 HTML 파일 경로)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 정적 파일 경로 설정 (이미지 파일 접근을 위한 설정)
-app.use(express.static(path.join(__dirname, 'images')));
+// 루트 경로 라우터
+app.get('/', (req, res) => {
+    // 웰컴 페이지(`welcome.html`)을 반환
+    res.sendFile(path.join(__dirname, 'public', 'main.html'));
+});
 
 // 회원가입 라우터
 app.post('/signup', (req, res) => {
@@ -100,7 +103,7 @@ app.post('/login', (req, res) => {
 });
 
 // 메인 페이지 라우터
-app.get('/main', (req, res) => {
+app.get('/', (req, res) => {
     // 세션에 사용자 정보가 있으면 로그인된 상태로 페이지 표시
     if (req.session.user) {
         res.send(`
@@ -109,7 +112,7 @@ app.get('/main', (req, res) => {
             <a href="/logout">로그아웃</a>
         `);
     } else {
-        res.redirect('/login'); // 로그인되어 있지 않으면 로그인 페이지로 리디렉션
+        // res.redirect('/login'); // 로그인되어 있지 않으면 로그인 페이지로 리디렉션
     }
 });
 
