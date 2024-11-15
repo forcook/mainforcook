@@ -88,38 +88,57 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="recipe-header">
-            <img src="img/recipe.jpg" alt="레시피 이미지">
-            <h1>맛있는 마늘수육</h1>
-            <p>부드러운 고기와 향긋한 마늘의 조화로 완성되는 마늘수육 레시피를 소개합니다.</p>
-        </div>
-
-        <div class="ingredients">
-            <h2>재료</h2>
-            <ul>
-                <li>돼지고기 500g</li>
-                <li>마늘 10쪽</li>
-                <li>대파 1대</li>
-                <li>간장 3큰술</li>
-                <li>설탕 1큰술</li>
-                <li>참기름 1큰술</li>
-                <li>후추 약간</li>
-                <li>물 2컵</li>
-            </ul>
-        </div>
-
-        <div class="instructions">
-            <h2>조리 방법</h2>
-            <p>1. 마늘과 대파는 다져줍니다.</p>
-            <p>2. 냄비에 돼지고기, 마늘, 대파, 간장, 설탕, 참기름, 후추, 물을 넣고 중간 불에서 끓입니다.</p>
-            <p>3. 끓기 시작하면 약한 불로 줄이고, 뚜껑을 덮어 40분 정도 졸여줍니다.</p>
-            <p>4. 고기가 부드럽게 익으면 불을 끄고, 먹기 좋은 크기로 썰어 접시에 담아냅니다.</p>
-            <p>5. 남은 육수를 소스처럼 고기에 뿌려 먹으면 더욱 맛있습니다.</p>
-        </div>
-
-        <a href="recipes.html" class="back-link">← 목록으로 돌아가기</a>
+    <div class="container" id="recipe-details">
+        <!-- 레시피 정보가 여기에 동적으로 삽입됩니다. -->
     </div>
+
+    <script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const recipeId = urlParams.get('recipeId');
+
+        fetch(`/api/recipes/${recipeId}`)
+            .then(response => response.json())
+            .then(recipe => {
+                const recipeDetails = `
+                    <div class="recipe-header">
+                        <img src="${recipe.image_url}" alt="${recipe.name}">
+                        <h1>${recipe.name}</h1>
+                        <p>${recipe.description}</p>
+                    </div>
+
+                    <div class="ingredients">
+                        <h2>재료</h2>
+                        <ul>
+                            ${recipe.ingredients.map(ingredient => `<li>${ingredient.amount} 
+${ingredient.name}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="instructions">
+                        <h2>조리 방법</h2>
+                        <p>${recipe.steps.split('\n').join('</p><p>')}</p>
+                    </div>
+
+                    <div class="cooking-time">
+                        <h2>총 조리 시간</h2>
+                        <p>${recipe.total_time} 분</p>
+                    </div>
+
+                    <div class="difficulty">
+                        <h2>난이도</h2>
+                        <p>${recipe.difficulty}</p>
+                    </div>
+
+                    <a href="recipes.html" class="back-link">← 목록으로 돌아가기</a>
+                `;
+                document.getElementById('recipe-details').innerHTML = recipeDetails;
+            })
+            .catch(error => {
+                console.error('Error fetching recipe:', error);
+            });
+    </script>
 
 </body>
 </html>
+
