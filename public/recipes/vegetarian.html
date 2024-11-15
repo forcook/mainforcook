@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEGETARIAN 레시피</title>
-    <link rel="stylesheet" href="vegetarian.css">
+    <link rel="stylesheet" href="/css/vegetarian.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* 기본 스타일 */
@@ -16,7 +17,8 @@
         }
 
         header {
-            background-color: #66bb6a; /* 연한 초록색 */
+            background-color: #66bb6a;
+            /* 연한 초록색 */
             padding: 20px 0;
             text-align: center;
         }
@@ -53,7 +55,8 @@
         }
 
         .page-tabs .tab-link.active {
-            background-color: #66bb6a; /* 연한 초록색 */
+            background-color: #66bb6a;
+            /* 연한 초록색 */
         }
 
         /* 컨테이너 및 정렬 버튼 스타일 */
@@ -72,9 +75,11 @@
         .sort-options button {
             padding: 10px 20px;
             margin: 0 10px;
-            border: 2px solid #66bb6a; /* 연한 초록색 */
+            border: 2px solid #66bb6a;
+            /* 연한 초록색 */
             background-color: #fff;
-            color: #66bb6a; /* 연한 초록색 */
+            color: #66bb6a;
+            /* 연한 초록색 */
             font-size: 1.1em;
             cursor: pointer;
             border-radius: 5px;
@@ -82,13 +87,15 @@
         }
 
         .sort-options button.active {
-            background-color: #66bb6a; /* 연한 초록색 */
+            background-color: #66bb6a;
+            /* 연한 초록색 */
             color: white;
             border-color: #66bb6a;
         }
 
         .sort-options button:hover {
-            background-color: #66bb6a; /* 연한 초록색 */
+            background-color: #66bb6a;
+            /* 연한 초록색 */
             color: white;
         }
 
@@ -109,7 +116,8 @@
             padding: 10px 20px;
             margin-left: 10px;
             border: none;
-            background-color: #66bb6a; /* 연한 초록색 */
+            background-color: #66bb6a;
+            /* 연한 초록색 */
             color: white;
             font-size: 1em;
             cursor: pointer;
@@ -149,24 +157,28 @@
         .recipe-details h3 {
             margin: 10px 0;
             font-size: 1.2em;
-            color: #000; /* 검정색 텍스트 */
+            color: #000;
+            /* 검정색 텍스트 */
         }
 
         .favorite-icon {
             background-color: transparent;
             border: none;
-            color: #66bb6a; /* 연한 초록색 */
+            color: #66bb6a;
+            /* 연한 초록색 */
             font-size: 1.5em;
             cursor: pointer;
             transition: color 0.3s;
         }
 
         .favorite-icon.active {
-            color: #218838; /* 다크 초록색 */
+            color: #218838;
+            /* 다크 초록색 */
         }
 
         .favorite-icon:hover {
-            color: #218838; /* 다크 초록색 */
+            color: #218838;
+            /* 다크 초록색 */
         }
 
         footer {
@@ -183,21 +195,23 @@
         }
 
         footer .social-links a:hover {
-            color: #66bb6a; /* 연한 초록색 */
+            color: #66bb6a;
+            /* 연한 초록색 */
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-content">
             <a href="main.html" class="logo">
-                <img src="로고.jpg" alt="Logo">
+                <img src="/assets/icons/로고.jpg" alt="Logo">
             </a>
             <nav id="top-nav">
-                <a href="favorite.html" title="즐겨찾기"><img src="즐겨찾기.png" alt="즐겨찾기"></a>
-                <a href="profile.html" title="프로필"><img src="회원가입.png" alt="프로필"></a>
-                <a href="login.html" title="로그인"><img src="로그인.png" alt="로그인"></a>
-                <a href="community.html" title="커뮤니티"><img src="커뮤니티.png" alt="커뮤니티"></a>
+                <a href="/pages/favorite.html" title="즐겨찾기"><img src="/assets/icons/즐겨찾기.png" alt="즐겨찾기"></a>
+                <a href="/pages/profile.html" title="프로필"><img src="/assets/icons/회원가입.png" alt="프로필"></a>
+                <a href="/pages/login.html" title="로그인"><img src="/assets/icons/로그인.png" alt="로그인"></a>
+                <a href="/pages/community.html" title="커뮤니티"><img src="/assets/icons/커뮤니티.png" alt="커뮤니티"></a>
             </nav>
         </div>
     </header>
@@ -206,13 +220,13 @@
     <div class="page-tabs">
         <a href="best.html" class="tab-link">BEST</a>
         <a href="new.html" class="tab-link">NEW</a>
-        <a href="vegetarian.html" class="tab-link active">VEGETARIAN</a>
-        <a href="meat.html" class="tab-link">MEAT</a>
+        <a href="/recipes/vegetarian.html" class="tab-link active">VEGETARIAN</a>
+        <a href="/recipes/meat.html" class="tab-link">MEAT</a>
     </div>
 
     <main class="container">
         <h1>VEGETARIAN 레시피</h1>
-        
+
         <!-- 정렬 옵션 버튼 -->
         <div class="sort-options">
             <button id="popularitySort" class="active">인기순</button>
@@ -223,7 +237,7 @@
             <input type="text" id="search" placeholder="레시피 검색...">
             <button id="filter">검색</button>
         </div>
-        
+
         <div class="recipe-container" id="recipeContainer">
             <!-- 레시피 카드들이 여기에 동적으로 표시됩니다. -->
         </div>
@@ -233,13 +247,13 @@
     <footer>
         <div class="social-links">
             <a href="https://www.instagram.com" target="_blank">
-                <img src="instagram.png" alt="Instagram">
+                <img src="/assets/icons/instagram.png" alt="Instagram">
             </a>
             <a href="https://www.youtube.com" target="_blank">
-                <img src="youtube.png" alt="YouTube">
+                <img src="/assets/icons/youtube.png" alt="YouTube">
             </a>
             <a href="https://www.blog.com" target="_blank">
-                <img src="blog.png" alt="Blog">
+                <img src="/assets/icons/blog.png" alt="Blog">
             </a>
         </div>
     </footer>
@@ -247,9 +261,9 @@
     <script>
         // 레시피 데이터 정의
         const recipes = [
-            { id: 1, title: '채식 비빔밥', description: '신선한 채소와 향긋한 고추장 소스를 곁들인 채식 비빔밥입니다.', popularity: 100, date: '2024-11-01', imgSrc: '채식비빔밥.jpg', link: 'vegetarian-bibimbap.html' },
-            { id: 2, title: '퀴노아 샐러드', description: '단백질이 풍부한 퀴노아와 다양한 채소가 어우러진 건강한 샐러드입니다.', popularity: 80, date: '2024-10-25', imgSrc: '퀴노아샐러드.jpg', link: 'quinoa-salad.html' },
-            { id: 3, title: '채소 스프', description: '신선한 채소와 허브가 가득 담긴 따뜻한 스프입니다.', popularity: 120, date: '2024-10-10', imgSrc: '채소스프.jpg', link: 'vegetarian-soup.html' }
+            { id: 1, title: '채식 비빔밥', description: '신선한 채소와 향긋한 고추장 소스를 곁들인 채식 비빔밥입니다.', popularity: 100, date: '2024-11-01', imgSrc: '/assets/images/채식비빔밥.jpg', link: 'vegetarian-bibimbap.html' },
+            { id: 2, title: '퀴노아 샐러드', description: '단백질이 풍부한 퀴노아와 다양한 채소가 어우러진 건강한 샐러드입니다.', popularity: 80, date: '2024-10-25', imgSrc: '/assets/images/퀴노아샐러드.jpg', link: 'quinoa-salad.html' },
+            { id: 3, title: '채소 스프', description: '신선한 채소와 허브가 가득 담긴 따뜻한 스프입니다.', popularity: 120, date: '2024-10-10', imgSrc: '/assets/images/채소스프.jpg', link: 'vegetarian-soup.html' }
         ];
 
         // 레시피 표시 함수
@@ -277,7 +291,7 @@
         }
 
         // 하트 클릭 시 토글 효과
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             if (event.target.closest('.favorite-icon')) {
                 const button = event.target.closest('.favorite-icon');
                 const icon = button.querySelector('i'); // 하트 아이콘
@@ -328,4 +342,5 @@
         displayRecipes([...recipes].sort((a, b) => b.popularity - a.popularity));
     </script>
 </body>
+
 </html>
