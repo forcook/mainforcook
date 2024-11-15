@@ -9,7 +9,7 @@ const app = express();
 const db = mysql.createConnection({
     host: 'localhost',  // 데이터베이스 호스트
     user: 'root',       // 데이터베이스 사용자
-    password: '1234', // 데이터베이스 비밀번호
+    password: '', // 데이터베이스 비밀번호
     database: 'forcook'  // 사용할 데이터베이스
 });
 
