@@ -13,7 +13,7 @@
             <nav id="top-nav">
                 <a href="favorite.html" title="즐겨찾기"><img src="즐겨찾기.png" alt="즐겨찾기"></a>
                 <a href="profile.html" title="회원가입"><img src="회원가입.png" alt="회원가입"></a>
-                <a href="login.html" title="로그인"><img src="로그인.png" alt="로그인"></a>
+                <a id="login-link" href="login.html" title="로그인"><img src="로그인.png" alt="로그인"></a>
                 <a href="community.html" title="커뮤니티"><img src="커뮤니티.png" alt="커뮤니티"></a>
             </nav>
             <!-- 상단 로고 (메인 페이지로 이동하게 설정) -->
@@ -26,10 +26,9 @@
         <div class="profile-section">
             <h2>회원 프로필</h2>
             <div class="profile-info-box">
-                <p><strong>이름:</strong> <span id="displayName">김연아</span></p>
-                <p><strong>이메일:</strong> <span id="displayEmail">Queen@gmail.com</span></p>
-                <p><strong>생년월일:</strong> <span id="displayBirthday">1990-01-01</span></p>
-                <p><strong>성별:</strong> <span id="displayGender">여성</span></p>
+                <p><strong>이름:</strong> <span id="displayName">로딩 중...</span></p>
+                <p><strong>이메일:</strong> <span id="displayEmail">로딩 중...</span></p>
+                <p><strong>성별:</strong> <span id="displayGender">로딩 중...</span></p>
             </div>
         </div>
         <div class="update-section">
@@ -43,10 +42,6 @@
                     <div class="form-group">
                         <label for="email">이메일</label>
                         <input type="email" id="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="birthday">생년월일</label>
-                        <input type="date" id="birthday" name="birthday" required>
                     </div>
                     <div class="form-group">
                         <label for="gender">성별</label>
@@ -65,6 +60,31 @@
             </div>
         </div>
     </main>
-    <script src="profile.js"></script>
+    <script>
+        // 사용자 정보를 가져오는 스크립트
+        fetch('/api/user') // 사용자 정보를 제공하는 API 경로
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('사용자 정보를 가져오는 데 실패했습니다.');
+            })
+            .then(user => {
+                // 사용자 정보를 HTML에 표시
+                document.getElementById('displayName').textContent = user.username;
+                document.getElementById('displayEmail').textContent = user.email;
+                document.getElementById('displayGender').textContent = user.gender;
+
+                // 폼 필드에 기존 정보 설정
+                document.getElementById('name').value = user.username;
+                document.getElementById('email').value = user.email;
+                document.getElementById('gender').value = user.gender;
+            })
+            .catch(error => {
+                console.error(error);
+                alert('사용자 정보를 가져오는 데 문제가 발생했습니다.');
+            });
+    </script>
 </body>
 </html>
+
