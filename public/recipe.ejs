@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= recipe.name %> - 레시피</title>
+    <style>
+        /* 필요한 스타일을 추가 */
+    </style>
+</head>
+<body>
+    <header>
+        <h1><%= recipe.name %> 레시피</h1>
+    </header>
+
+    <div>
+        <h3>재료</h3>
+        <ul>
+            <% ingredients.forEach(ingredient => { %>
+                <li><%= ingredient.ingredient_name %> - <%= ingredient.quantity %></li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <div>
+        <h3>조리 방법</h3>
+        <ol>
+            <% steps.split('\n').forEach(step => { %>
+                <li><%= step %></li>
+            <% }); %>
+        </ol>
+    </div>
+
+    <div>
+        <a href="/recipes">뒤로 가기</a>
+    </div>
+</body>
+</html>
+
