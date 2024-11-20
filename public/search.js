@@ -1,44 +1,41 @@
-// 검색 기능
-function handleSearch() {
-    const query = document.querySelector("#searchInput").value.trim();
-    const resultsDiv = document.querySelector("#searchResults");
+document.getElementById('searchButton').addEventListener('click', () => {
+    // 검색 입력값 가져오기
+    const searchInput = document.getElementById('searchInput').value.trim();
 
-    if (!query) {
-        resultsDiv.innerHTML = "<p>검색어를 입력하세요.</p>";
+    // 입력값이 비어 있으면 알림 표시
+    if (!searchInput) {
+        alert('검색어를 입력하세요.');
         return;
     }
 
-    // 검색 결과를 동적으로 표시 (여기서는 예제 데이터 사용)
-    const dummyData = [
-        { title: "채식 레시피 1", description: "채소로 만든 건강한 레시피." },
-        { title: "육식 레시피 1", description: "육류로 만든 고소한 요리." },
-        { title: "BEST 레시피", description: "인기 있는 베스트 요리." },
-    ];
+    // 쉼표로 구분된 검색어를 서버로 전달
+    const formattedQuery = searchInput.split(',')
+        .map(term => term.trim()) // 각 검색어 양쪽 공백 제거
+        .join(','); // 쉼표로 다시 합치기
 
-    const filteredData = dummyData.filter((item) =>
-        item.title.includes(query) || item.description.includes(query)
-    );
-
-    resultsDiv.innerHTML = ""; // 기존 결과 초기화
-
-    if (filteredData.length === 0) {
-        resultsDiv.innerHTML = "<p>검색 결과가 없습니다.</p>";
-        return;
-    }
-
-    filteredData.forEach((item) => {
-        const resultItem = document.createElement("div");
-        resultItem.className = "result-item";
-        resultItem.innerHTML = `
-            <h2>${item.title}</h2>
-            <p>${item.description}</p>
-        `;
-        resultsDiv.appendChild(resultItem);
-    });
-}
-
-// 검색 버튼 이벤트 등록
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelector("#searchButton").addEventListener("click", handleSearch);
+    // 서버에 검색 요청 보내기
+    fetch(`/api/search?query=${encodeURIComponent(formattedQuery)}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('검색 결과:', data);
+            
+            // 결과를 화면에 표시하는 로직 추가
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = ''; // 기존 결과 초기화
+            if (data.length > 0) {
+                data.forEach(recipe => {
+                    const recipeElement = document.createElement('div');
+                    recipeElement.innerHTML = `
+                        <h3>${recipe.name}</h3>
+                        <p>${recipe.description}</p>
+                        <img src="${recipe.image_url}" alt="${recipe.name}" />
+                    `;
+                    resultsContainer.appendChild(recipeElement);
+                });
+            } else {
+                resultsContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
+            }
+        })
+        .catch(err => console.error('검색 오류:', err));
 });
 

@@ -1,46 +1,55 @@
-// 즐겨찾기 목록을 로드하는 함수
-function loadFavorites() {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const favoriteList = document.getElementById('favorite-list');
+document.addEventListener('DOMContentLoaded', () => {
+    const userId = getCurrentUserId(); // 현재 로그인한 사용자 ID를 가져오는 함수 (구현 필요)
 
-    favoriteList.innerHTML = ''; // 기존 목록 비우기
-    favorites.forEach((recipe, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <img src="${recipe.image}" alt="${recipe.name} 이미지" width="100">
-            <div class="recipe-info">
-                <h3>${recipe.name}</h3>
-                <p>${recipe.description}</p>
-                <button class="remove-favorite" onclick="removeFavorite(${index})">삭제</button>
-            </div>
-        `;
-        favoriteList.appendChild(listItem);
-    });
+    // 즐겨찾기 데이터 가져오기
+    fetch(`/api/favorites/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const favoritesContainer = document.getElementById('favoritesList');
+            
+            // 데이터 렌더링
+            data.forEach(recipe => {
+                const recipeElement = document.createElement('div');
+                recipeElement.classList.add('recipe');
+                
+                recipeElement.innerHTML = `
+                    <img src="${recipe.image_url}" alt="${recipe.name}" />
+                    <h3>${recipe.name}</h3>
+                    <p>${recipe.description}</p>
+                    <button class="removeFavoriteButton" data-id="${recipe.recipe_id}">즐겨찾기 제거</button>
+                `;
+
+                favoritesContainer.appendChild(recipeElement);
+            });
+        })
+        .catch(err => console.error('즐겨찾기 데이터 가져오기 오류:', err));
+});
+
+// "즐겨찾기 제거" 버튼 클릭 이벤트 처리
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('removeFavoriteButton')) {
+        const recipeId = e.target.getAttribute('data-id');
+        const userId = getCurrentUserId(); // 현재 로그인한 사용자 ID 가져오기
+
+        // 즐겨찾기 삭제 API 호출
+        fetch('/api/favorites', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, recipeId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message); // 성공 메시지 표시
+            e.target.closest('.recipe').remove(); // DOM에서 해당 항목 제거
+        })
+        .catch(err => console.error('즐겨찾기 제거 오류:', err));
+    }
+});
+
+// 현재 로그인한 사용자 ID를 반환하는 함수
+function getCurrentUserId() {
+    // 이 함수는 실제로 로그인 상태를 확인하고 사용자 ID를 반환해야 합니다.
+    // 아래는 예시입니다. 적절한 인증 로직으로 대체하세요.
+    return localStorage.getItem('userId') || 1; // 기본값으로 1을 반환
 }
-
-// 즐겨찾기를 추가하는 함수
-function addFavorite() {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const newRecipe = {
-        name: '새 레시피', // 레시피 이름
-        description: '레시피 설명', // 레시피 설명
-        image: 'sample.jpg', // 레시피 이미지 경로
-    };
-
-    favorites.push(newRecipe);
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    loadFavorites(); // 즐겨찾기 목록을 갱신
-    alert('즐겨찾기가 추가되었습니다!');
-}
-
-// 즐겨찾기를 삭제하는 함수
-function removeFavorite(index) {
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    favorites.splice(index, 1); // 선택한 항목 삭제
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    loadFavorites(); // 즐겨찾기 목록을 갱신
-}
-
-// 페이지 로드 시 즐겨찾기 목록을 자동으로 로드
-document.addEventListener('DOMContentLoaded', loadFavorites);
 

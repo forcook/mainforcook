@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>즐겨찾기 페이지</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Font Awesome CDN 추가 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        /* 기존 스타일 유지 */
-        body {
+
+	<style>
+	 body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -166,7 +164,7 @@
         }
 
         #favorite-list img {
-            width: 100px;
+            width: 100px; /* 이미지 크기 조정 */
             height: auto;
             border-radius: 8px;
             margin-right: 15px;
@@ -274,26 +272,10 @@
         <section class="recipe-collection">
             <h2>
                 <input type="text" value="레시피 모음 1" class="collection-name" />
-                <!-- 돋보기 아이콘 사용 -->
-                <a href="recipedetail.html" class="view-collection"><i class="fas fa-search"></i> </a>
+                <a href="recipedetail.html" class="view-collection"><i class="fas fa-search"></i></a>
             </h2>
             <ul id="favorite-list">
-                <li>
-                    <img src="레시피1.jpg" alt="레시피 1 이미지">
-                    <div class="recipe-info">
-                        <h3>닭가슴살 샐러드</h3>
-                        <p>단백질이 풍부하고 건강한 샐러드입니다.</p>
-                        <button class="remove-favorite" onclick="removeFavorite(this)">삭제</button>
-                    </div>
-                </li>
-                <li>
-                    <img src="레시피2.jpg" alt="레시피 2 이미지">
-                    <div class="recipe-info">
-                        <h3>치킨 파르메산</h3>
-                        <p>치킨과 치즈의 조화가 일품인 레시피입니다.</p>
-                        <button class="remove-favorite" onclick="removeFavorite(this)">삭제</button>
-                    </div>
-                </li>
+                <!-- 서버에서 가져온 즐겨찾기 레시피가 여기에 추가됩니다. -->
             </ul>
             <button class="add-favorites" onclick="addFavorite()">즐겨찾기 추가</button>
         </section>
@@ -302,18 +284,10 @@
         <section class="recipe-collection">
             <h2>
                 <input type="text" value="레시피 모음 2" class="collection-name" />
-                <!-- 돋보기 아이콘 사용 -->
-                <a href="recipedetail2.html" class="view-collection"><i class="fas fa-search"></i> </a>
+                <a href="recipedetail2.html" class="view-collection"><i class="fas fa-search"></i></a>
             </h2>
-            <ul id="favorite-list">
-                <li>
-                    <img src="레시피3.jpg" alt="레시피 3 이미지">
-                    <div class="recipe-info">
-                        <h3>비건 타코</h3>
-                        <p>신선한 채소와 고소한 맛이 조화를 이루는 타코입니다.</p>
-                        <button class="remove-favorite" onclick="removeFavorite(this)">삭제</button>
-                    </div>
-                </li>
+            <ul id="favorite-list-2">
+                <!-- 서버에서 가져온 즐겨찾기 레시피가 여기에 추가됩니다. -->
             </ul>
             <button class="add-favorites" onclick="addFavorite()">즐겨찾기 추가</button>
         </section>
@@ -330,15 +304,72 @@
     </footer>
 
     <script>
-        function removeFavorite(button) {
-            const listItem = button.parentElement.parentElement;
-            listItem.remove();
+        // 즐겨찾기 목록 로드 함수
+        function loadFavorites() {
+            const userId = 1; // 사용자 ID를 설정 (예: 로그인한 사용자 ID)
+            fetch(`/api/favorites?userId=${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('네트워크 응답이 좋지 않습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const favoriteList = document.getElementById('favorite-list');
+                    favoriteList.innerHTML = ''; // 기존 목록 초기화
+
+                    data.favorites.forEach(recipe => {
+                        const listItem = createRecipeCard(recipe);
+                        favoriteList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('즐겨찾기 데이터 로드 오류:', error);
+                });
         }
 
+	function createRecipeCard(recipe) {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+                <img src="/uploads/${recipe.image_url}" alt="${recipe.recipe_name}">
+                <div class="recipe-info">
+                    <h3>${recipe.recipe_name}</h3>
+                    <p>${recipe.description}</p>
+                    <p><strong>조리 방법:</strong> ${recipe.steps}</p> <!-- 조리 방법 추가 -->
+                    <button class="remove-favorite" onclick="removeFavorite(${recipe.favorite_id})">삭제</button>
+                    <a href="/recipe/${recipe.recipe_id}" class="view-recipe-button">레시피 보기</a> <!-- 레시피 보기 버튼 추가 -->
+                </div>
+            `;
+            return listItem;
+        }
+	 function removeFavorite(id) {
+            // 서버에 삭제 요청 보내기
+            fetch(`/api/favorites/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('삭제 요청 실패');
+                }
+                // 삭제 후 UI에서 항목 제거
+                loadFavorites(); // 즐겨찾기 목록 다시 로드
+            })
+            .catch(error => {
+                console.error('삭제 오류:', error);
+            });
+        }
+	
+
+
+        // 즐겨찾기 추가 함수
         function addFavorite() {
             // 즐겨찾기 추가 로직
             alert("즐겨찾기가 추가되었습니다!");
         }
+
+        // 페이지 로드 시 즐겨찾기 목록 로드
+        window.onload = loadFavorites;
     </script>
 </body>
 </html>
+

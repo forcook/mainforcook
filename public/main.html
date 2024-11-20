@@ -21,11 +21,16 @@
             margin: 0 auto;
         }
 
-	  header {
-            background-color: #ffe3f9; /* 더 부드럽고 연한 핑크 */
-            padding: 5px 0;
-            border-bottom: 1px solid #e0e0e0; /* 밝은 회색 */
-        }
+	header {
+    background-color: #ffe3f9; /* 더 부드럽고 연한 핑크 */
+    padding: 5px 0;
+    border-bottom: 1px solid #e0e0e0; /* 밝은 회색 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: space-between; /* 양쪽 끝으로 정렬 */
+}
+
+	
         .logo-link img {
             width: 240px; /* 로고 크기 키우기 */
             height: auto;
@@ -178,6 +183,20 @@
         .right-arrow {
             right: 10px;
         }
+	logout-button {
+    background-color: #d9534f; /* 빨간색 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #c9302c; /* 어두운 빨간색 */
+}
+
 
         /* 작은 화면에서 슬라이더 항목 크기 조정 */
         @media (max-width: 768px) {
@@ -200,9 +219,8 @@
                 <a href="login.html" title="로그인"><img src="로그인.png" alt="로그인 아이콘"></a>
                 <a href="community.html" title="커뮤니티"><img src="커뮤니티.png" alt="커뮤니티 아이콘"></a>
 
-		<span id="user-info" style="color: white; margin-left: 20px;">
-
-		 <script>
+			<span id="user-info" style="color: black; margin-left: 20px;">
+	<script>
 			fetch('/api/user') // 사용자 정보를 제공하는 API 경로
                             .then(response => {
                                 if (response.ok) {
@@ -220,10 +238,15 @@
                                 console.error(error);
                             });	 		
 			</script>
-		  </span>
+		
+
+	  </span>
       		 </nav>
         </div>
     </header>
+
+	
+
 
     <main class="container">
         <!-- Hero Section -->
@@ -354,6 +377,7 @@
         <p>&copy; For cook. 2024 ver</p>
     </footer>
 
-    <script src="main.js"></script>
+ <script src="/main.js"></script>
+	
 </body>
 </html>

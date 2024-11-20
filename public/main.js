@@ -63,10 +63,9 @@ function addFavorite(button) {
 // 나만의 레시피 추가 버튼 클릭 시 로그인 상태 확인
 document.getElementById('add-recipe-btn').addEventListener('click', function(event) {
     event.preventDefault(); // 기본 링크 동작 방지
-
-    // API 호출하여 로그인 상태 확인
+        
     fetch('/api/user')
-        .then(response => {
+        .then(response => {   
             if (response.ok) {
                 // 로그인 상태인 경우 mine.html로 이동
                 window.location.href = 'mine.html'; // 나만의 레시피 페이지로 이동
@@ -80,4 +79,12 @@ document.getElementById('add-recipe-btn').addEventListener('click', function(eve
             window.location.href = '/login'; // 오류 발생 시 로그인 페이지로 이동
         });
 });
+
+
+
+// main.js
+
+// main.js
+
+// 로그인 페이지에서 로그인 처리
 

@@ -247,27 +247,27 @@
 </head>
 <body>
     <!-- 헤더 -->
-    <header>
-        <a href="main.html">
-            <img src="로고.jpg" alt="Logo">
+<header>
+    <a href="/main.html"> <!-- 여기를 수정합니다 -->
+        <img src="/images/로고.jpg" alt="Logo">
+    </a>
+    
+    <div class="right-nav-icons">
+        <a href="/favorite.html" title="즐겨찾기">
+            <img src="/images/즐겨찾기.png" alt="즐겨찾기">
         </a>
-
-        <div class="right-nav-icons">
-            <a href="favorite.html" title="즐겨찾기">
-                <img src="즐겨찾기.png" alt="즐겨찾기">
-            </a>
-            <a href="signup.html" title="회원가입">
-                <img src="회원가입.png" alt="회원가입">
-            </a>
-            <a href="profile.html" title="프로필">
-                <img src="로그인.png" alt="프로필">
-            </a>
-            <a href="community.html" title="커뮤니티">
-                <img src="커뮤니티.png" alt="커뮤니티">
-            </a>
-        </div>
-    </header>
-
+        <a href="/signup.html" title="회원가입">
+            <img src="/images/회원가입.png" alt="회원가입">
+        </a>
+        <a href="/profile.html" title="프로필">
+            <img src="/images/로그인.png" alt="프로필">
+        </a>
+        <a href="/community.html" title="커뮤니티">
+            <img src="/images/커뮤니티.png" alt="커뮤니티">
+        </a>
+    </div>
+</header>
+	
     <div id="tabs">
         <a href="best.html" class="tab-button">BEST</a>
         <a href="new.html" class="tab-button">NEW</a>
@@ -305,10 +305,10 @@
                     <p><strong>난이도:</strong> <%= recipe.difficulty %></p>
                     <p><strong>제작 시간:</strong> <%= recipe.total_time %> 분</p>
                 </div>
-
-                <button class="favorite-icon">
-                    <span>즐겨찾기</span>
+			<button id="favoriteButton" data-recipe-id="<%= recipe.recipe_id %>">즐겨찾기 추가</button>
+                    즐겨찾기
                 </button>
+
             </div>
         </div>
     </main>
@@ -321,6 +321,36 @@
             <a href="https://www.blog.com/" title="Blog"><img src="blog.png" alt="Blog"></a>
         </div>
     </footer>
+
+
+
+
+		 <!-- 스크립트 추가 -->
+<script>
+    document.getElementById('favoriteButton').addEventListener('click', function () {
+        const recipeId = this.getAttribute('data-recipe-id'); // recipeId 가져오기
+                        
+        fetch('/api/favorite', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ recipeId }), // recipeId를 JSON으로 전송
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('즐겨찾기에 추가되었습니다!');
+            } else {
+                alert(`즐겨찾기 추가 중 문제가 발생했습니다: ${data.message}`);
+            } 
+        })  
+        .catch(err => {
+            console.error('즐겨찾기 오류:', err);
+            alert('즐겨찾기 추가 중 오류가 발생했습니다.');
+        });
+    });
+</script>
 </body>
 </html>
 
