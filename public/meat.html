@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEAT 레시피</title>
+    <link rel="stylesheet" href="meat.css">
+</head>
+<body>
+    <!-- 상단 네비게이션 바 -->
+    <header>
+        <div class="logo">
+            <span>FOR COOK</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">BEST</a></li>
+                <li><a href="#">NEW</a></li>
+                <li><a href="#">VEGETARIAN</a></li>
+                <li><a href="#" class="active">MEAT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 레시피 검색 및 표시 -->
+    <main>
+        <h1>MEAT 레시피</h1>
+        <div class="search">
+            <input type="text" placeholder="레시피를 검색해 보세요">
+        </div>
+        <div class="recipe-cards">
+            <div class="recipe-card">
+                <img src="../images/립.jpg" alt="립">
+                <p>립</p>
+                <p>맛있는 립 레시피입니다. 고기의 풍미가 살아있어요.</p>
+                <button class="favorite">❤️ 즐겨찾기</button>
+            </div>
+            <div class="recipe-card">
+                <img src="../images/불고기.jpg" alt="불고기">
+                <p>불고기</p>
+                <p>진한 소스 맛이 일품인 불고기 레시피입니다.</p>
+                <button class="favorite">❤️ 즐겨찾기</button>
+            </div>
+            <div class="recipe-card">
+                <img src="../images/돼지갈비.jpg" alt="돼지갈비">
+                <p>돼지갈비</p>
+                <p>돼지갈비를 맛있게 조리하는 법을 배워보세요.</p>
+                <button class="favorite">❤️ 즐겨찾기</button>
+            </div>
+            <div class="recipe-card">
+                <img src="../images/스테이크.jpg" alt="스테이크">
+                <p>스테이크</p>
+                <p>스테이크를 완벽하게 구워보세요.</p>
+                <button class="favorite">❤️ 즐겨찾기</button>
+            </div>
+            <div class="recipe-card">
+                <img src="../images/감자탕.jpg" alt="감자탕">
+                <p>감자탕</p>
+                <p>감자탕 레시피를 알아보세요.</p>
+                <button class="favorite">❤️ 즐겨찾기</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 하단 푸터 -->
+    <footer>
+        <p>&copy; 2024 Your Company. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">YouTube</a>
+            <a href="#">E-mail</a>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+    <script>
+        let recipeData = []; // 서버에서 로드된 레시피를 저장할 배열
+
+        // 레시피 데이터 로드
+        fetch('/api/recipes?category=meat')
+            .then(response => response.json())
+            .then(data => {
+                recipeData = data; // 데이터를 전역 변수에 저장
+                const recipeList = document.querySelector('.recipe-list');
+
+                // 데이터를 화면에 표시
+                data.forEach(recipe => {
+                    const recipeCard = createRecipeCard(recipe);
+                    recipeList.appendChild(recipeCard);
+                });
+            })
+            .catch(error => {
+                console.error('레시피 데이터 로드 오류:', error);
+            });
+
+        // 레시피 카드 생성 함수
+        function createRecipeCard(recipe) {
+            const recipeCard = document.createElement('div');
+            recipeCard.classList.add('recipe-card');
+
+            // 레시피 이미지
+            if (recipe.image_url) {
+                const img = document.createElement('img');
+                img.src = `/uploads/${recipe.image_url}`;
+                img.alt = recipe.name;
+                recipeCard.appendChild(img);
+            }
+
+            // 레시피 제목
+            const title = document.createElement('h3');
+            title.textContent = recipe.name;
+            recipeCard.appendChild(title);
+
+            // 레시피 설명
+            const description = document.createElement('p');
+            description.textContent = recipe.description;
+            recipeCard.appendChild(description);
+
+            // 재료 목록
+            const ingredients = document.createElement('p');
+            ingredients.textContent = `재료: ${recipe.ingredients}`;
+            recipeCard.appendChild(ingredients);
+
+            // 조리 시간
+            const totalTime = document.createElement('p');
+            totalTime.textContent = `조리 시간: ${recipe.total_time}`;
+            recipeCard.appendChild(totalTime);
+
+            // 레시피 보기 버튼
+            const button = document.createElement('a');
+            button.href = `/recipe/${recipe.recipe_id}`;
+            button.textContent = '레시피 보기';
+            button.classList.add('view-recipe-button');
+            recipeCard.appendChild(button);
+
+            return recipeCard;
+        }
+
+        // 검색 기능
+        document.querySelector('#searchButton').addEventListener('click', () => {
+            const query = document.querySelector('#searchInput').value.trim().toLowerCase().replace(/\s+/g, ''); // 띄어쓰기 무시
+            const resultsDiv = document.querySelector('#searchResults');
+            const recipeList = document.querySelector('.recipe-list');
+            resultsDiv.innerHTML = ''; // 이전 검색 결과 초기화
+
+            // 검색어가 없으면 모든 레시피를 표시
+            if (!query) {
+                recipeList.style.display = 'grid'; // 모든 레시피 보이기
+                return;
+            }
+
+            // 검색된 레시피만 보이도록 필터링
+            const filteredRecipes = recipeData.filter(recipe => {
+                const recipeName = recipe.name.replace(/\s+/g, '').toLowerCase();
+                const recipeIngredients = recipe.ingredients.replace(/\s+/g, '').toLowerCase();
+                return recipeName.includes(query) || recipeIngredients.includes(query);
+            });
+
+            // 필터링된 레시피가 없으면 검색 결과 없음
+            if (filteredRecipes.length === 0) {
+                resultsDiv.innerHTML = '<p>검색 결과가 없습니다.</p>';
+            } else {
+                recipeList.style.display = 'none'; // 모든 레시피 숨기기
+                filteredRecipes.forEach(recipe => {
+                    const recipeCard = createRecipeCard(recipe);
+                    resultsDiv.appendChild(recipeCard);
+                    recipeCard.style.display = 'block'; // 검색된 레시피 보이기
+                });
+            }
+        });
+    </script>
+</body>
+<script src="meat.js"></script>
+</html>
+

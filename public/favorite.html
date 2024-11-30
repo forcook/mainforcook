@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>즐겨찾기 페이지</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="favorite.css" rel="stylesheet">
+    <style>
+        /* 기본 스타일 설정 */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #d1c1c1;
+            color: white;
+            padding: 15px 0;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        #top-nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        /* 검색창 및 필터링 창 디자인 */
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .search-container input {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-container input:focus {
+            border-color: #ff8c00;
+        }
+
+        .search-container .search-btn {
+            background-color: #ff8c00;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-container .search-btn:hover {
+            background-color: #e77f00;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-container select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-container select:focus {
+            border-color: #ff8c00;
+            background-color: #fff9e6;
+        }
+
+        .recipe-collection {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-collection h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recipe-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        .recipe-item img {
+            width: 120px;
+            height: 120px;
+            margin-right: 20px;
+            border-radius: 5px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .recipe-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-details h3 {
+            font-size: 1.2rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .recipe-details span {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .remove-favorites {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .remove-favorites:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px;
+            }
+
+            .search-container input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .filter-container {
+                margin-top: 10px;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .recipe-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .recipe-item img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="main.html"><img src="../images/로고.png" alt="Logo" id="logo"></a>
+            <nav id="top-nav">
+                <a href="favorite.html" title="즐겨찾기"><img src="../images/즐겨찾기.png" alt="즐겨찾기"></a>
+                <a href="profile.html" title="회원가입"><img src="../images/회원가입.png" alt="회원가입"></a>
+                <a href="login.html" title="로그인"><img src="../images/로그인.png" alt="로그인"></a>
+                <a href="community.html" title="커뮤니티"><img src="../images/커뮤니티.png" alt="커뮤니티"></a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 검색창 및 필터 박스 -->
+    <div class="search-container">
+        <input type="text" class="collection-name" id="search-input" placeholder="레시피나 모음 이름 검색">
+        <button class="search-btn" id="search-btn"><i class="fa fa-search"></i> 검색</button>
+
+        <div class="filter-container">
+            <select id="category-filter">
+                <option value="">카테고리</option>
+                <option value="다이어트">다이어트</option>
+                <option value="고단백">고단백</option>
+                <option value="비건">비건</option>
+            </select>
+
+            <select id="difficulty-filter">
+                <option value="">난이도</option>
+                <option value="쉬움">쉬움</option>
+                <option value="중간">중간</option>
+                <option value="어려움">어려움</option>
+            </select>
+        </div>
+    </div>
+
+    <main>
+        <!-- 레시피 모음 1 -->
+        <section class="recipe-collection" data-name="다이어트 레시피">
+            <h2>
+                <input type="text" class="collection-name-edit" value="다이어트 레시피" />
+                <a href="collection-details.html" class="fa fa-search" style="font-size: 18px; text-decoration: none; color: #ff8c00; margin-left: 10px;" title="전체 레시피 보기"></a>
+            </h2>
+
+            <div class="recipe-item" data-difficulty="쉬움">
+                <img src="../images/chi-salad.jpg" alt="Recipe 1">
+                <div class="recipe-details">
+                    <h3>닭가슴살 샐러드</h3>
+                    <span>다이어트, 고단백</span>
+                    <span>쉬운 레시피</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+
+            <div class="recipe-item" data-difficulty="쉬움">
+                <img src="../images/sandwich.jpg" alt="Recipe 1">
+                <div class="recipe-details">
+                    <h3>달걀 샌드위치</h3>
+                    <span>다이어트, 고단백</span>
+                    <span>중간 난이도</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+
+            <div class="recipe-item" data-difficulty="어려움">
+                <img src="../images/burrito.jpg" alt="Recipe 2">
+                <div class="recipe-details">
+                    <h3>연어 부리또</h3>
+                    <span>비건, 다이어트</span>
+                    <span>어려운 레시피</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+        </section>
+
+        <!-- 레시피 모음 2 -->
+        <section class="recipe-collection" data-name="고단백 레시피">
+            <h2>
+                <input type="text" class="collection-name-edit" value="고단백 레시피" />
+                <a href="collection-details.html" class="fa fa-search" style="font-size: 18px; text-decoration: none; color: #ff8c00; margin-left: 10px;" title="전체 레시피 보기"></a>
+            </h2>
+
+            <div class="recipe-item" data-difficulty="쉬움">
+                <img src="../images/chi-meat.jpg" alt="Recipe 3">
+                <div class="recipe-details">
+                    <h3>닭가슴살 스테이크</h3>
+                    <span>고단백</span>
+                    <span>쉬운 레시피</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+
+            <div class="recipe-item" data-difficulty="중간">
+                <img src="../images/egg-roll.jpg" alt="Recipe 4">
+                <div class="recipe-details">
+                    <h3>계란말이</h3>
+                    <span>고단백</span>
+                    <span>중간 난이도</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+        </section>
+
+        <!-- 레시피 모음 3 -->
+        <section class="recipe-collection" data-name="비건 레시피">
+            <h2>
+                <input type="text" class="collection-name-edit" value="비건 레시피" />
+                <a href="collection-details.html" class="fa fa-search" style="font-size: 18px; text-decoration: none; color: #ff8c00; margin-left: 10px;" title="전체 레시피 보기"></a>
+            </h2>
+
+            <div class="recipe-item" data-difficulty="어려움">
+                <img src="../images/salmon-steak.jpg" alt="Recipe 5">
+                <div class="recipe-details">
+                    <h3>비건 스테이크</h3>
+                    <span>비건</span>
+                    <span>어려운 레시피</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+
+            <div class="recipe-item" data-difficulty="중간">
+                <img src="../images/tofu.jpg" alt="Recipe 6">
+                <div class="recipe-details">
+                    <h3>두부 덮밥</h3>
+                    <span>비건</span>
+                    <span>중간 난이도</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+        </section>
+
+        <!-- 레시피 모음 4 -->
+        <section class="recipe-collection" data-name="쉬운 레시피">
+            <h2>
+                <input type="text" class="collection-name-edit" value="쉬운 레시피" />
+                <a href="collection-details.html" class="fa fa-search" style="font-size: 18px; text-decoration: none; color: #ff8c00; margin-left: 10px;" title="전체 레시피 보기"></a>
+            </h2>
+
+            <div class="recipe-item" data-difficulty="쉬움">
+                <img src="../images/cream.jpg" alt="Recipe 7">
+                <div class="recipe-details">
+                    <h3>감자 그라탕</h3>
+                    <span>중간난이도</span>
+                    <span>쉬운 레시피</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+
+            <div class="recipe-item" data-difficulty="중간">
+                <img src="../images/pasta.jpg" alt="Recipe 8">
+                <div class="recipe-details">
+                    <h3>파스타</h3>
+                    <span>쉬운 레시피</span>
+                    <span>중간 난이도</span>
+                </div>
+                <button class="remove-favorites">제거</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2024 Recipe App</p>
+    </footer>
+
+    <script>
+        // 검색 기능
+        document.getElementById('search-btn').addEventListener('click', function () {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const collections = document.querySelectorAll('.recipe-collection');
+
+            collections.forEach(collection => {
+                const collectionName = collection.querySelector('h2 input').value.toLowerCase();
+                if (collectionName.includes(searchInput)) {
+                    collection.style.display = 'block';
+                } else {
+                    collection.style.display = 'none';
+                }
+            });
+        });
+
+        // 필터 기능 (카테고리, 난이도)
+        document.getElementById('category-filter').addEventListener('change', filterRecipes);
+        document.getElementById('difficulty-filter').addEventListener('change', filterRecipes);
+
+        function filterRecipes() {
+            const categoryFilter = document.getElementById('category-filter').value.toLowerCase();
+            const difficultyFilter = document.getElementById('difficulty-filter').value.toLowerCase();
+            const collections = document.querySelectorAll('.recipe-item');
+
+            collections.forEach(item => {
+                const category = item.querySelector('.recipe-details span').textContent.toLowerCase();
+                const difficulty = item.querySelector('.recipe-details span:nth-child(3)').textContent.toLowerCase();
+
+                if ((categoryFilter === "" || category.includes(categoryFilter)) && (difficultyFilter === "" || difficulty.includes(difficultyFilter))) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+       /* 전체 기본 스타일 */
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #ffffff;
+            color: #333;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+        #logo {
+            width: 200px;
+        }
+        #top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 20px;
+        }
+        #top-nav a {
+            text-decoration: none;
+            color: #333;
+        }
+        #top-nav a img {
+            width: 45px;
+            height: 45px;
+        }
+        .page-tabs {
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .page-tabs a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 4px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .page-tabs a.active, .page-tabs a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        main {
+            padding: 20px 0;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .controls input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+        .controls input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .controls select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #ffffff;
+            transition: border-color 0.3s;
+        }
+        .controls select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .recipe-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .recipe-item {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .recipe-item:hover {
+            transform: scale(1.05);
+        }
+        .recipe-item img {
+            width: 100%;
+            height: auto;
+        }
+        .recipe-info {
+            padding: 15px;
+        }
+        .recipe-info h3 {
+            margin: 10px 0;
+            font-size: 1.5em;
+        }
+        .recipe-info p {
+            margin: 10px 0;
+        }
+        .favorite-icon {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #ff5722;
+            transition: color 0.3s;
+        }
+        .favorite-icon.favorited .heart-icon {
+            color: #e64a19; /* 찬 하트 색상 */
+        }
+        .favorite-icon:hover .heart-icon {
+            color: #e64a19;
+        }
+        .heart-icon {
+            transition: color 0.3s;
+        }
+        footer {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #social-media a {
+            margin: 0 10px;
+            display: inline-block;
+        }
+        #social-media img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        @media (max-width: 768px) {
+            .recipe-list {
+                flex-direction: column;
+                align-items: center;
+            }
+        }

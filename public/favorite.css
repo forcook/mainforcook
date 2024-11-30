@@ -1,0 +1,236 @@
+	 body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 밝은 배경색 */
+            color: #333;
+        }
+
+        header {
+            background-color: #ffffff;
+            color: #333;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #logo {
+            width: 200px;
+        }
+
+        #top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        #top-nav a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        #top-nav a img {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+        }
+
+        nav#tabs {
+            background-color: #fff;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        nav#tabs .tab {
+            text-decoration: none;
+            color: #333;
+            padding: 12px 25px;
+            display: inline-block;
+            font-size: 1.2em;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav#tabs .tab:hover,
+        nav#tabs .tab.active {
+            background-color: #ff6347; /* Tomato color */
+            color: white;
+        }
+
+        main {
+            padding: 20px;
+            background-color: #fff;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .recipe-collection {
+            max-width: 700px;
+            margin: 0 auto 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            position: relative;
+        }
+
+        .recipe-collection h2 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recipe-collection input {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 1em;
+            width: calc(100% - 40px);
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .recipe-collection .add-favorites,
+        .recipe-collection .view-collection {
+            background-color: #5bc0de;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-left: 10px;
+            max-width: 150px;
+            width: auto;
+            box-sizing: border-box;
+            transition: background-color 0.3s;
+        }
+
+        .recipe-collection .add-favorites:hover,
+        .recipe-collection .view-collection:hover {
+            background-color: #31b0d5;
+        }
+
+        #favorite-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #favorite-list li {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #favorite-list img {
+            width: 100px; /* 이미지 크기 조정 */
+            height: auto;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        .recipe-info {
+            flex: 1;
+        }
+
+        .recipe-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+
+        .recipe-info p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .remove-favorite {
+            background-color: #d9534f;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+
+        .remove-favorite:hover {
+            background-color: #c9302c;
+        }
+
+        footer {
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #social-media a {
+            margin: 0 10px;
+            display: inline-block;
+        }
+
+        #social-media img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* 돋보기 아이콘에 스타일 추가 */
+        .view-collection {
+            background-color: transparent;
+            color: #007bff;
+            padding: 8px 12px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+
+        .view-collection:hover {
+            color: #ff6347; /* 마우스 오버시 색상 변화 */
+        }
+
+        .view-collection i {
+            margin-right: 5px; /* 아이콘과 텍스트 사이 간격 */
+        }

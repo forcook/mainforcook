@@ -1,0 +1,126 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between; /* 로고는 왼쪽, 아이콘들은 오른쪽 */
+    align-items: center;
+    background-color: #007bff;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-link img {
+    height: 40px;
+}
+
+.icon-links {
+    display: flex;
+    align-items: center;
+}
+
+.icon-links a {
+    margin-left: 20px; /* 아이콘 사이 간격 */
+}
+
+.icon-links img {
+    width: 25px;
+    height: 25px;
+    transition: transform 0.3s ease;
+}
+
+.icon-links img:hover {
+    transform: scale(1.1); /* 아이콘 hover 시 크기 변경 */
+}
+
+main {
+    padding: 80px 20px 20px; /* 헤더 높이만큼 padding을 주어 본문과 겹치지 않도록 */
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.favorite-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.favorite-btn:hover {
+    color: red;
+}
+
+.image-preview {
+    margin-top: 10px;
+    max-width: 300px;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.preview-img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+}
+
+#confirmation-message {
+    text-align: center;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    margin-top: 20px;
+    display: none;
+}

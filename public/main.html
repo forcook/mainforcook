@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>메인 페이지</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="main.css">
     <style>
         /* 기본적인 스타일 */
         body {
@@ -21,22 +21,27 @@
             margin: 0 auto;
         }
 
-        header {
-            background-color: #f8b8c5; /* 더 부드럽고 연한 핑크 */
-            padding: 20px 0;
-            border-bottom: 1px solid #e0e0e0; /* 밝은 회색 */
-        }
+	header {
+    background-color: #ffe3f9; /* 더 부드럽고 연한 핑크 */
+    padding: 5px 0;
+    border-bottom: 1px solid #e0e0e0; /* 밝은 회색 */
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: space-between; /* 양쪽 끝으로 정렬 */
+}
 
+	
         .logo-link img {
-            width: 120px; /* 로고 크기 키우기 */
+            width: 240px; /* 로고 크기 키우기 */
             height: auto;
         }
 
         nav a {
-            margin-left: 20px;
+            margin-left: 10px;
             color: #fff; /* 흰색 텍스트 */
             text-decoration: none;
-            font-size: 18px;
+            font-size: 20px;
+
         }
 
         nav a:hover {
@@ -178,6 +183,20 @@
         .right-arrow {
             right: 10px;
         }
+	logout-button {
+    background-color: #d9534f; /* 빨간색 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #c9302c; /* 어두운 빨간색 */
+}
+
 
         /* 작은 화면에서 슬라이더 항목 크기 조정 */
         @media (max-width: 768px) {
@@ -192,34 +211,101 @@
     <header>
         <div class="container">
             <a href="main.html" class="logo-link" aria-label="홈으로 이동">
-                <img src="assets/icons/로고.jpg" alt="Logo" id="logo">
+                <img src="../images/로고.png" alt="Logo" id="logo">
             </a>
             <nav id="top-nav">
-                <a href="/pages/favorite.html" title="즐겨찾기"><img src="/assets/icons/즐겨찾기.png" alt="즐겨찾기 아이콘"></a>
-                <a href="/pages/profile.html" title="프로필"><img src="/assets/icons/회원가입.png" alt="프로필 아이콘"></a>
-                <a href="/pages/login.html" title="로그인"><img src="/assets/icons/로그인.png" alt="로그인 아이콘"></a>
-                <a href="/pages/community.html" title="커뮤니티"><img src="/assets/icons/커뮤니티.png" alt="커뮤니티 아이콘"></a>
-            </nav>
+                <a href="favorite.html" title="즐겨찾기"><img src="../images/즐겨찾기.png" alt="즐겨찾기 아이콘"></a>
+                <a href="profile.html" title="프로필"><img src="../images/회원가입.png" alt="프로필 아이콘"></a>
+                <a href="login.html" title="로그인"><img src="../images/로그인.png" alt="로그인 아이콘"></a>
+                <a href="community.html" title="커뮤니티"><img src="../images/커뮤니티.png" alt="커뮤니티 아이콘"></a>
+
+			<span id="user-info" style="color: black; margin-left: 20px;">
+	<script>
+			fetch('/api/user') // 사용자 정보를 제공하는 API 경로
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                                throw new Error('사용자 정보를 가져오는 데 실패했습니다.');
+                            })
+				.then(user => {
+                                document.getElementById('user-info').innerHTML = `
+                                    안녕하세요, ${user.username}님! 
+                                    <a href="/logout" style="color: white; margin-left: 20px;">로그아웃</a>
+                                `;
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });	 		
+			</script>
+		
+
+	  </span>
+      		 </nav>
         </div>
     </header>
+
+	
+
 
     <main class="container">
         <!-- Hero Section -->
         <section id="hero">
             <h1>오늘 하루 식단을 책임질 최고의 레시피를 제공해드립니다.</h1>
             <p>당신의 접시 위에 영감을 주는 다양한 레시피를 소개합니다.</p>
-            <a href="mine.html" class="btn" aria-label="나만의 레시피 추가하기">나만의 레시피 추가하기</a>
-        </section>
+  	<a href="mine.html" id="add-recipe-btn" class="btn" aria-label="나만의 레시피 추가하기">나만의 레시피 추가하기</a>
+        
+</section>
 
         <!-- 안내 모달 - 탭 형식으로 구현 -->
         <section id="guide-tabs">
             <details>
                 <summary class="tab-summary">안내 페이지 열기</summary>
                 <div class="tab-content">
-                    <h2>사이트 사용 안내</h2>
-                    <p>여기에는 웹사이트 사용법이나 기능 설명을 추가할 수 있습니다.</p>
-                    <p> 다양한 레시피를 검색하고, 자신만의 레시피를 추가할 수 있습니다.</p>
-                </div>
+ 		   <p> For cook~? 다양한 레시피 검색, 자신만의 레시피 추가가 가능해요!</p>
+                    <li>우리 홈페이지는 여러분이 쉬운 사용을 위해 다양한 기능을 제공하고 있어요! 원하는 정보, 서비스를 빠르게 찾을 수 있습니다. </br> </br>
+
+                     <ol>  
+                        <div class="site-guide">
+                            <h2>사이트 사용 안내</h2>
+                            <p>
+                                <strong>For cook</strong>에서는 다양한 레시피를 <strong>검색</strong>하고, 
+                                <strong>자신만의 레시피를 추가</strong>할 수 있습니다! 아래 간단한 사용법을 확인해 보세요. 😊 </br>
+                            </p>
+                            <ul>
+                                <li>
+                                    <h3>간편한 메뉴</h3>
+                                    <p>
+                                        홈페이지 상단 메뉴를 통해 원하는 페이지로 빠르게 이동하세요! 
+                                        직관적인 디자인으로 누구나 쉽게 사용할 수 있어요.
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3>회원가입 및 로그인</h3>
+                                    <p>
+                                        회원가입 후 로그인을 하면 <strong>즐겨찾기</strong>와 <strong>맞춤 서비스</strong>를 이용할 수 있어요. 
+                                        나만의 공간을 만들어 특별한 요리 경험을 쌓아보세요!
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3>검색 기능</h3>
+                                    <p>
+                                        상단 검색창에 키워드를 입력하면 필요한 레시피나 정보를 빠르게 찾아볼 수 있어요. 
+                                        원하는 요리를 쉽게 검색해보세요!
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3>커뮤니티 참여</h3>
+                                    <p>
+                                        다른 사용자들과 의견을 나누고, 질문을 올려 <strong>요리 노하우</strong>를 공유할 수 있어요. 
+                                        For cook만의 따뜻한 커뮤니티를 경험해 보세요.
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </ol>                
+</div>
             </details>
         </section>
 
@@ -233,7 +319,7 @@
 
         <!-- Recipe Banner Section -->
         <section id="recipe-banner">
-            <img src="/assets/images/립.jpg" alt="오늘의 추천 레시피">
+            <img src="../images/립.jpg" alt="오늘의 추천 레시피">
             <h2>오늘의 레시피</h2>
             <p>오늘 하루를 위해 제공되는 추천 레시피 정보를 지금 바로 확인해보세요!</p>
             <a href="best.html" class="btn">추천 레시피 보기</a>
@@ -244,22 +330,22 @@
             <h2>주간 인기 메뉴</h2>
             <div class="slider">
                 <div class="menu-item">
-                    <img src="/assets/images/마늘수육.jpg" alt="주간 인기 메뉴 1">
+                    <img src="../images/마늘수육.jpg" alt="주간 인기 메뉴 1">
                     <button class="favorite-btn" aria-label="즐겨찾기 추가" onclick="addFavorite(this)">♡</button>
                     <span class="like-count">1.2K</span>
                 </div>
                 <div class="menu-item">
-                    <img src="/assets/images/참치찌개.jpg" alt="주간 인기 메뉴 2">
+                    <img src="../images/참치찌개.jpg" alt="주간 인기 메뉴 2">
                     <button class="favorite-btn" aria-label="즐겨찾기 추가" onclick="addFavorite(this)">♡</button>
                     <span class="like-count">3.2K</span>
                 </div>
                 <div class="menu-item">
-                    <img src="/assets/images/vegansalade.jpg" alt="주간 인기 메뉴 3">
+                    <img src="../images/vegansalade.jpg" alt="주간 인기 메뉴 3">
                     <button class="favorite-btn" aria-label="즐겨찾기 추가" onclick="addFavorite(this)">♡</button>
                     <span class="like-count">2.8K</span>
                 </div>
                 <div class="menu-item">
-                    <img src="/assets/images/감자탕.jpg" alt="주간 인기 메뉴 4">
+                    <img src="../images/감자탕.jpg" alt="주간 인기 메뉴 4">
                     <button class="favorite-btn" aria-label="즐겨찾기 추가" onclick="addFavorite(this)">♡</button>
                     <span class="like-count">2.1K</span>
                 </div>
@@ -273,19 +359,19 @@
             <h2>인기 재료</h2>
             <div class="ingredients-box">
                 <div class="ingredient">
-                    <img src="/assets/images/마늘.jpg" alt="마늘">
+                    <img src="../images/마늘.jpg" alt="마늘">
                     <p>마늘</p>
                 </div>
                 <div class="ingredient">
-                    <img src="/assets/images/양파.jpg" alt="양파">
+                    <img src="../images/양파.jpg" alt="양파">
                     <p>양파</p>
                 </div>
                 <div class="ingredient">
-                    <img src="/assets/images/토마토.jpg" alt="토마토">
+                    <img src="../images/토마토.jpg" alt="토마토">
                     <p>토마토</p>
                 </div>
                 <div class="ingredient">
-                    <img src="/assets/images/옥수수.jpg" alt="옥수수">
+                    <img src="../images/옥수수.jpg" alt="옥수수">
                     <p>옥수수</p>
                 </div>
             </div>
@@ -314,13 +400,15 @@
 
     <footer>
         <div id="social-media">
-            <a href="https://www.instagram.com"><img src="/assets/icons/instagram.png" alt="Instagram"></a>
-            <a href="https://www.youtube.com"><img src="/assets/icons/youtube.png" alt="YouTube"></a>
-            <a href="https://www.blog.com"><img src="/assets/icons/blog.png" alt="Blog"></a>
+            <a href="https://www.instagram.com"><img src="../images/instagram.png" alt="Instagram"></a>
+            <a href="https://www.youtube.com"><img src="../images/youtube.png" alt="YouTube"></a>
+            <a href="https://www.blog.com"><img src="../images/blog.png" alt="Blog"></a>
         </div>
         <p>&copy; For cook. 2024 ver</p>
     </footer>
 
-    <script src="/js/main.js"></script>
+ <script src="/main.js"></script>
+	
 </body>
 </html>
+

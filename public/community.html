@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 페이지</title>
+    <link rel="stylesheet" href="community.css">
+</head>
+<body>
+    <header>
+        <h1>이벤트 페이지</h1>
+        <div class="search-filter-container">
+            <input type="text" id="search-input" placeholder="이벤트 검색..." />
+            <button id="search-btn" onclick="filterEvents()">검색</button>
+            <div class="filter-box">
+                <select id="category-diet-select" onchange="filterEvents()">
+                    <option value="">카테고리 선택</option>
+                    <option value="summer">여름</option>
+                    <option value="winter">겨울</option>
+                    <option value="autumn">가을</option>
+                    <option value="eco">친환경</option>
+                </select>
+                <select id="diet-select" onchange="filterEvents()">
+                    <option value="">식단 선택</option>
+                    <option value="vegan">비건</option>
+                    <option value="carnivore">육식</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="event-list-container">
+            <div id="event-list" class="event-list"></div>
+        </section>
+
+        <!-- 이벤트 상세보기 모달 -->
+        <div id="event-detail" class="event-detail">
+            <div class="event-detail-content">
+                <span id="close-detail" class="close-btn">&times;</span>
+                <div class="event-detail-scroll">
+                    <div class="event-description">
+                        <img id="event-image" class="event-detail-image" src="" alt="">
+                        <h2 id="event-title"></h2>
+                        <p id="event-description"></p>
+                        <p id="event-date"></p>
+                        <p id="event-status" class="status"></p>
+                    </div>
+
+                    <div class="application-container">
+                        <h3>이벤트 신청</h3>
+                        <textarea id="event-application-text" placeholder="참여 이유를 작성하세요..."></textarea>
+                        <input type="url" id="event-application-url" placeholder="블로그나 링크 URL을 입력하세요">
+                        <button id="participate-btn">참여하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="community.js"></script>
+</body>
+</html>
